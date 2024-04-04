@@ -52,7 +52,7 @@ export const signin=async (req,res,next)=>{
          process.env.JWT_SECRET_KEY,
 
       )
-      res.status(200).cookie("Access token",token,{
+      res.status(200).cookie("access_token",token,{
          httpOnly:true
       }).json(validUser);
 
