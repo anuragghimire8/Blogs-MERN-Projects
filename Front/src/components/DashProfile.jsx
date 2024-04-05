@@ -1,6 +1,15 @@
 
 import { Alert, Button, Modal, ModalBody, TextInput } from 'flowbite-react';
 import { useEffect, useRef, useState } from 'react';
+import {
+  updateStart,
+  updateSuccess,
+  updateFailure,
+  deleteUserStart,
+  deleteUserSuccess,
+  deleteUserFailure,
+  signoutSuccess,
+} from '../redux/user/userSlice';
 import { useSelector } from 'react-redux';
 import {
     getDownloadURL,
@@ -90,7 +99,7 @@ import { CircularProgressbar } from 'react-circular-progressbar';
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
   };    
-         /*
+         
   const handleSubmit = async (e) => {
     e.preventDefault();
     setUpdateUserError(null);
@@ -125,7 +134,7 @@ import { CircularProgressbar } from 'react-circular-progressbar';
       setUpdateUserError(error.message);
     }
   }; 
-  /*
+  
   const handleDeleteUser = async () => {
     setShowModal(false);
     try {
@@ -159,11 +168,11 @@ import { CircularProgressbar } from 'react-circular-progressbar';
       console.log(error.message);
     }
   };
-  */
+  
   return (
     <div className='max-w-lg mx-auto p-3 w-full'>
     <h1 className='my-7 text-center font-semibold text-3xl'>Profile</h1>
-    <form className='flex flex-col gap-4'>
+    <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
       <input
         type='file'
         accept='image/*'
@@ -219,8 +228,9 @@ import { CircularProgressbar } from 'react-circular-progressbar';
         <TextInput
           type='email'
           id='email'
+          disabled
           placeholder='email'
-          onChange={handleChange}
+          
           defaultValue={currentUser.email}
         
         />
@@ -235,11 +245,12 @@ import { CircularProgressbar } from 'react-circular-progressbar';
           type='submit'
           gradientDuoTone='purpleToBlue'
           outline
-          disabled
+          disabled={loading || imageFileUploading}
         >
-         Update
+        {loading ? 'Loading...' : 'Update'}
         </Button>
      
+        {currentUser.isAdmin && (
           <Link to={'/create-post'}>
             <Button
               type='button'
@@ -249,13 +260,14 @@ import { CircularProgressbar } from 'react-circular-progressbar';
               Create a post
             </Button>
           </Link>
+     )} 
        
       </form>
       <div className='text-red-500 flex justify-between mt-5'>
       <span onClick={() => setShowModal(true)} className='cursor-pointer'>
           Delete Account
         </span>
-        <span className='cursor-pointer'>
+        <span onClick={handleSignout} className='cursor-pointer'>
           Sign Out
         </span>
       </div>
@@ -275,10 +287,10 @@ import { CircularProgressbar } from 'react-circular-progressbar';
         </Alert>
       )}
       <Modal
-        show={showModal}
-       
-        popup
-        size='md'
+      show={showModal}
+      onClose={() => setShowModal(false)}
+      popup
+      size='md'
       >
         <Modal.Header />
         <Modal.Body>
@@ -288,10 +300,10 @@ import { CircularProgressbar } from 'react-circular-progressbar';
               Are you sure you want to delete your account?
             </h3>
             <div className='flex justify-center gap-4'>
-              <Button color='failure' >
+            <Button color='failure' onClick={handleDeleteUser}>
                 Yes, I'm sure
-              </Button>
-              <Button color='gray' >
+              </Button>s
+              <Button color='gray' onClick={() => setShowModal(false)}>
                 No, cancel
               </Button>
             </div>
