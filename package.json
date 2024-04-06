@@ -8,6 +8,7 @@
     "dev": "nodemon api/index.js",
     "script": "node api/index.js",
     "build":"npm install  && npm install --prefix front && npm run build --prefix --front"
+    
   },
   "keywords": [],
   "author": "",
