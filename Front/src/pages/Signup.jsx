@@ -13,35 +13,35 @@ const [loading,setLodaing]=useState(false);
    
     setFormData({...formData,[e.target.id]:e.target.value.trim()})
   }
-
-  const handleSubmit=async (e)=>{
-       e.preventDefault();
-       if(!formData.username || !formData.email || !formData.password){
-        return setErrorMessage("Please Fill Out All The Form ")
-       }
-       try{
-        setLodaing(true)
-        setErrorMessage(null)
-        const res=await fetch("/api/auth/signup",{
-          method:"POST",
-          headers:{"Content-Type":"application/json"},
-          body:JSON.stringify(formData),
-
-        });
-        const data=await res.json();
-        if (data.success===false){
-          return setErrorMessage(data.message)
-        } 
-        setLodaing(false);
-        if(res.ok){
-          navigate("/sign-in")
-        }
-      
-      }catch(error){
-       setErrorMessage(error.message);
-       setLodaing(false);
-       }
-  }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!formData.username || !formData.email || !formData.password) {
+      return setErrorMessage("Please Fill Out All The Form ");
+    }
+    try {
+      setLodaing(true);
+      setErrorMessage(null);
+      const res = await fetch("/api/auth/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+      const data = await res.json();
+      if (data.success === false) {
+        setErrorMessage(data.message);
+        setLodaing(false); // Set loading to false here
+        return; // Exit the function early
+      }
+      setLodaing(false); // Set loading to false for successful sign up
+      if (res.ok) {
+        navigate("/sign-in");
+      }
+    } catch (error) {
+      setErrorMessage(error.message);
+      setLodaing(false); // Set loading to false in case of error
+    }
+  };
+  
 
   return (
     <div className=' min-h-screen mt-20'>

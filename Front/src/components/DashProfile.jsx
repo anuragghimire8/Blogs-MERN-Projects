@@ -302,7 +302,7 @@ import { CircularProgressbar } from 'react-circular-progressbar';
             <div className='flex justify-center gap-4'>
             <Button color='failure' onClick={handleDeleteUser}>
                 Yes, I'm sure
-              </Button>s
+              </Button>
               <Button color='gray' onClick={() => setShowModal(false)}>
                 No, cancel
               </Button>
