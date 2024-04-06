@@ -19,6 +19,9 @@ import ScrollToTop from './components/ScrollToTop';
 import Search from './pages/Search'
 
 const App = () => {
+
+  //here are all the components
+  
   return (
     <BrowserRouter>
     <ScrollToTop/>
