@@ -21,7 +21,8 @@ import Search from './pages/Search'
 const App = () => {
 
   //here are all the components
-  
+  //name updated
+
   return (
     <BrowserRouter>
     <ScrollToTop/>
